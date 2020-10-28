@@ -31,16 +31,15 @@
             </p>
             <p>
               <span v-for="tag in node.tags" :key="tag.id">
-                <a href="">{{ tag.title }}</a>&nbsp;
+                <a href="">{{ tag.title }}</a
+                >&nbsp;
               </span>
             </p>
           </div>
           <hr />
 
           <!-- Pager -->
-          <div class="clearfix">
-            <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
-          </div>
+          <Pager :info="$page.posts.pageInfo" />
         </div>
       </div>
     </div>
@@ -48,8 +47,12 @@
 </template>
 
 <page-query>
-query {
-  posts: allStrapiPost {
+query($page: Int) {
+  posts: allStrapiPost(perPage: 3, page: $page) @paginate {
+    pageInfo {
+      totalPages
+      currentPage
+    }
     edges {
       node {
         id
@@ -73,7 +76,14 @@ query {
 </page-query>
 
 <script>
-export default {};
+import { Pager } from "gridsome";
+
+export default {
+  name: "Index",
+  components: {
+    Pager,
+  },
+};
 </script>
 
 <style>
