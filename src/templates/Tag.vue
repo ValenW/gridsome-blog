@@ -7,8 +7,7 @@
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
             <div class="site-heading">
-              <h1>Clean Blog</h1>
-              <span class="subheading">A Blog Theme by Start Bootstrap</span>
+              <h1># {{ $page.tag.title }}</h1>
             </div>
           </div>
         </div>
@@ -19,27 +18,21 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="post-preview" v-for="{ node } in $page.posts.edges" :key="node.id">
-            <g-link :to="`/post/${node.id}`">
-              <h2 class="post-title">{{ node.title }}</h2>
+          <div class="post-preview" v-for="post in $page.tag.posts" :key="post.id">
+            <g-link :to="`/post/${post.id}`">
+              <h2 class="post-title">{{ post.title }}</h2>
               <!-- <h3 class="post-subtitle">Problems look mighty small from 150 miles up</h3> -->
             </g-link>
             <p class="post-meta">
               Posted by
               <a href="#">{{ `Valen Wang` }}</a>
-              on {{ node.created_at }}
-            </p>
-            <p>
-              <span v-for="tag in node.tags" :key="tag.id">
-                <g-link :to="`/tag/${tag.id}`">{{ tag.title }}</g-link
-                >&nbsp;
-              </span>
+              on {{ post.created_at }}
             </p>
           </div>
           <hr />
 
           <!-- Pager -->
-          <Pager :info="$page.posts.pageInfo" />
+          <!-- <Pager :info="$page.posts.pageInfo" /> -->
         </div>
       </div>
     </div>
@@ -47,14 +40,11 @@
 </template>
 
 <page-query>
-query($page: Int) {
-  posts: allStrapiPost(perPage: 3, page: $page) @paginate {
-    pageInfo {
-      totalPages
-      currentPage
-    }
-    edges {
-      node {
+query($id: ID!) {
+  tag: strapiTag(id: $id) {
+    id
+    title
+    posts {
         id
         title
         content
@@ -65,26 +55,23 @@ query($page: Int) {
         }
         is_publish
         created_at
-        tags {
-          id
-          title
-        }
       }
-    }
   }
 }
 </page-query>
 
 <script>
-import { Pager } from "gridsome";
-
 export default {
-  name: "Index",
-  components: {
-    Pager,
+  name: "Tag",
+  data() {
+    return {};
   },
+  components: {},
+  watch: {},
+  mounted() {},
+  methods: {},
 };
 </script>
 
-<style>
+<style scoped>
 </style>
