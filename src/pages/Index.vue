@@ -1,14 +1,19 @@
 <template>
   <Layout>
     <!-- Page Header -->
-    <header class="masthead" style="background-image: url('/img/home-bg.jpg')">
+    <header
+      class="masthead"
+      :style="{
+        'background-image': `url(http://localhost:1337${general.cover.url})`,
+      }"
+    >
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
             <div class="site-heading">
-              <h1>Clean Blog</h1>
-              <span class="subheading">A Blog Theme by Start Bootstrap</span>
+              <h1>{{ general.title }}</h1>
+              <span class="subheading">{{ general.subtitle }}</span>
             </div>
           </div>
         </div>
@@ -72,6 +77,20 @@ query($page: Int) {
       }
     }
   }
+  general: allStrapiGeneral {
+    edges {
+      node {
+        id
+        title
+        subtitle
+        cover {
+          url
+          width
+          height
+        }
+      }
+    }
+  }
 }
 </page-query>
 
@@ -82,6 +101,11 @@ export default {
   name: "Index",
   components: {
     Pager,
+  },
+  computed: {
+    general() {
+      return this.$page.general.edges[0].node;
+    },
   },
 };
 </script>
