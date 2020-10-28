@@ -4,7 +4,7 @@
     <header
       class="masthead"
       :style="{
-        'background-image': $page.post.cover ? `url(http://localhost:1337${$page.post.cover.url})` : '',
+        'background-image': $page.post.cover ? `url(${GRIDSOME_API_URL}${$page.post.cover.url})` : '',
       }"
     >
       <div class="overlay"></div>

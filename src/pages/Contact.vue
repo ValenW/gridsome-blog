@@ -120,7 +120,7 @@ export default {
       try {
         const { data } = await axios({
           method: "POST",
-          url: "http://localhost:1337/contacts",
+          url: `${this.GRIDSOME_API_URL}/contacts`,
           data: this.form,
         });
         console.log(data);

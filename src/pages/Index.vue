@@ -4,7 +4,7 @@
     <header
       class="masthead"
       :style="{
-        'background-image': `url(http://localhost:1337${general.cover.url})`,
+        'background-image': `url(${GRIDSOME_API_URL}${general.cover.url})`,
       }"
     >
       <div class="overlay"></div>
