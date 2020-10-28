@@ -26,11 +26,12 @@
           <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
           <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
           <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
-          <form name="sentMessage" id="contactForm" novalidate>
+          <form name="sentMessage" id="contactForm">
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Name</label>
                 <input
+                  v-model="form.name"
                   type="text"
                   class="form-control"
                   placeholder="Name"
@@ -45,6 +46,7 @@
               <div class="form-group floating-label-form-group controls">
                 <label>Email Address</label>
                 <input
+                  v-model="form.email"
                   type="email"
                   class="form-control"
                   placeholder="Email Address"
@@ -59,6 +61,7 @@
               <div class="form-group col-xs-12 floating-label-form-group controls">
                 <label>Phone Number</label>
                 <input
+                  v-model="form.phone"
                   type="tel"
                   class="form-control"
                   placeholder="Phone Number"
@@ -73,6 +76,7 @@
               <div class="form-group floating-label-form-group controls">
                 <label>Message</label>
                 <textarea
+                  v-model="form.message"
                   rows="5"
                   class="form-control"
                   placeholder="Message"
@@ -85,7 +89,7 @@
             </div>
             <br />
             <div id="success"></div>
-            <button type="submit" class="btn btn-primary" id="sendMessageButton">Send</button>
+            <button @click.prevent="onSubmit" type="submit" class="btn btn-primary" id="sendMessageButton">Send</button>
           </form>
         </div>
       </div>
@@ -94,15 +98,45 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Contact",
   data() {
-    return {};
+    return {
+      form: {
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+      },
+    };
   },
   components: {},
   watch: {},
   mounted() {},
-  methods: {},
+  methods: {
+    async onSubmit(e) {
+      try {
+        const { data } = await axios({
+          method: "POST",
+          url: "http://localhost:1337/contacts",
+          data: this.form,
+        });
+        console.log(data);
+        window.alert("submit success!");
+        this.form = {
+          name: "",
+          email: "",
+          phone: "",
+          message: "",
+        };
+      } catch (e) {
+        console.error(e);
+        window.alert("submit failed, please retry later");
+      }
+    },
+  },
 };
 </script>
 
